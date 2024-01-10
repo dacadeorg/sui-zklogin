@@ -14,6 +14,21 @@ Before using this code, it is recommended to consult with a qualified profession
 ## Setup
 
 ### Install Sui
+If you are using Github codespaces, it's recommended to use pre-built binaries rather than building them from source.
+
+To download pre-built binaries, you should run `download-sui-binaries.sh` in the terminal. 
+This scripts takes three parameters (in this particular order) - `version`, `environment` and `os`:
+- sui version, for example `1.16.0`. You can lookup a more up-to-date version available here [SUI Github releases](https://github.com/MystenLabs/sui/releases).
+- `environment` - that's the environment that you are targeting, in our case it's `devnet`. Other available options are: `testnet` and `mainnet`.
+- `os` - name of the os. If you are using Github codespaces, put `ubuntu-x86_64`. Other available options are: `macos-arm64`, `macos-x86_64`, `ubuntu-x86_64`, `windows-x86_64` (not for WSL).
+
+To donwload SUI binaries for codespace, run this command:
+```
+./download-sui-binaries.sh "v1.16.0" "devnet" "ubuntu-x86_64"
+```
+and restart your terminal window.
+
+If you prefer to build the binaries from source, run this command in your terminal:
 ```
 cargo install --locked --git https://github.com/MystenLabs/sui.git --branch devnet sui
 ```
