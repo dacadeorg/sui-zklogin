@@ -13,24 +13,38 @@ Before using this code, it is recommended to consult with a qualified profession
 
 ## Setup
 
+### Install rust and cargo:
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+if you get an error like this:
+```
+error: could not amend shell profile: '/home/codespace/.config/fish/conf.d/rustup.fish': could not write rcfile file: '/home/codespace/.config/fish/conf.d/rustup.fish': No such file or directory (os error 2)
+```
+run these commands and re-run the rustup script:
+```
+mkdir -p /home/codespace/.config/fish/conf.d
+touch /home/codespace/.config/fish/conf.d/rustup.fish
+```
+
 ### Install Sui
 If you are using Github codespaces, it's recommended to use pre-built binaries rather than building them from source.
 
 To download pre-built binaries, you should run `download-sui-binaries.sh` in the terminal. 
 This scripts takes three parameters (in this particular order) - `version`, `environment` and `os`:
-- sui version, for example `1.16.0`. You can lookup a more up-to-date version available here [SUI Github releases](https://github.com/MystenLabs/sui/releases).
-- `environment` - that's the environment that you are targeting, in our case it's `devnet`. Other available options are: `testnet` and `mainnet`.
+- sui version, for example `1.15.0`. You can lookup a more up-to-date version available here [SUI Github releases](https://github.com/MystenLabs/sui/releases).
+- `environment` - that's the environment that you are targeting, in our case it's `testnet`. Other available options are: `devnet` and `mainnet`.
 - `os` - name of the os. If you are using Github codespaces, put `ubuntu-x86_64`. Other available options are: `macos-arm64`, `macos-x86_64`, `ubuntu-x86_64`, `windows-x86_64` (not for WSL).
 
 To donwload SUI binaries for codespace, run this command:
 ```
-./download-sui-binaries.sh "v1.16.0" "devnet" "ubuntu-x86_64"
+./download-sui-binaries.sh "v1.21.1" "testnet" "ubuntu-x86_64"
 ```
 and restart your terminal window.
 
 If you prefer to build the binaries from source, run this command in your terminal:
 ```
-cargo install --locked --git https://github.com/MystenLabs/sui.git --branch devnet sui
+cargo install --locked --git https://github.com/MystenLabs/sui.git --branch testnet sui
 ```
 
 ### Install dev tools
@@ -45,11 +59,22 @@ Git LFS. Installation instructions can be found here: https://git-lfs.com/
 
 ### Run a local network
 ```
-git clone --branch devnet https://github.com/MystenLabs/sui.git
+git clone --branch testnet https://github.com/MystenLabs/sui.git
 
 cd sui
 
 RUST_LOG="off,sui_node=info" cargo run --bin sui-test-validator
+```
+
+### Testnet configuration
+
+For the sake of this tutorial, let's add a testnet node:
+```
+sui client new-env --rpc https://fullnode.testnet.sui.io:443 --alias testnet
+```
+and switch to `testnet`:
+```
+sui client switch --env testnet
 ```
 
 ### Get localnet SUI tokens
@@ -62,6 +87,13 @@ curl --location --request POST 'http://127.0.0.1:9123/gas' --header 'Content-Typ
 }'
 ```
 `<ADDRESS>` - replace this by the output of this command that returns the active address:
+
+### Get testnet SUI tokens
+After you switched to `testnet`, run this command to get 1 testnet SUI:
+```
+sui client faucet
+```
+it will use the the current active address and the current active network.
 
 ## Prepare the contract
 
